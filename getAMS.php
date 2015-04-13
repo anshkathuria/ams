@@ -122,14 +122,34 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']
 						{
 							?>
                             <td>
-                            	<select id="per<?=$i ?>" name="per<?=$i ?>" class="form-control select-sub">
+                            	<select id="per<?=$i ?>" name="per<?=$i ?>" style="min-width:93px" class="form-control select-sub" <?=($_SESSION["role"]=="User" && in_array($prevPeriodName[$i],$_SESSION["subsUser"]))?"":(($_SESSION["role"]=="Administrator")?"":"disabled") ?>>
                                   <?    
 									foreach($subjects as $sub)
 									{
-										
-								    ?>
-										<option value="<?=$sub ?>" <?=($sub == $prevPeriodName[$i])?"selected":"" ?>><?=$sub ?></option>
-								    <?
+										if($_SESSION["role"]=="Administrator")
+										{
+										?>
+                                        <option value="<?=$sub ?>" <?=($sub == $prevPeriodName[$i])?"selected":"" ?>><?=$sub ?></option>
+                                        <?
+										}
+										else if($sub == $prevPeriodName[$i] && in_array($sub,$_SESSION["subsUser"]))
+										{
+										?>
+											<option value="<?=$sub ?>" selected><?=$sub ?></option>
+								    	<?
+										}
+										else if($sub == $prevPeriodName[$i])
+										{
+										?>
+											<option value="<?=$sub ?>" selected><?=$sub ?></option>
+								    	<?	
+										}
+										else if(in_array($sub,$_SESSION["subsUser"]))
+										{
+										?>
+											<option value="<?=$sub ?>" ><?=$sub ?></option>
+								    	<?
+										}
 									}
 								  ?>
                                 </select>
@@ -145,9 +165,12 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']
 								  <?    
 									foreach($subjects as $sub)
 									{
-								  ?>
-										<option value="<?=$sub ?>"><?=$sub ?></option>
-								  <?
+										if(($_SESSION["role"]=="Administrator") || ($_SESSION["role"]=="User" && in_array($sub,$_SESSION["subsUser"])))
+										{
+								  		?>
+											<option value="<?=$sub ?>"><?=$sub ?></option>
+								 		<?
+										}
 									}
 								  ?>
 								</select>
@@ -178,14 +201,29 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']
 							  {
 								  if(in_array($i,$prevPeriods))
 								  {
+									  if(($_SESSION["role"]=="Administrator") || ($_SESSION["role"]=="User" && in_array($prevPeriodName[$i],$_SESSION["subsUser"])))
+									  {
 									  ?>
-                                      <td>
-                                        <div class="checkbox checkbox-danger text-center">
-                                            <input id="<?=$i ?>-<?=$htno ?>" name="<?=$i ?>" value="<?=$htno ?>" type="checkbox" <?=(in_array($htno,$prevAttd[$i]))?"checked":"" ?>>
-                                            <label for="<?=$i ?>-<?=$htno ?>"></label>
-                                        </div>
-                                      </td>
+                                          <td>
+                                            <div class="checkbox checkbox-danger text-center">
+                                                <input id="<?=$i ?>-<?=$htno ?>" name="<?=$i ?>" value="<?=$htno ?>" type="checkbox" <?=(in_array($htno,$prevAttd[$i]))?"checked":"" ?>>
+                                                <label for="<?=$i ?>-<?=$htno ?>"></label>
+                                            </div>
+                                          </td>
                                       <?
+									  }
+									  else
+									  {
+									  ?>
+                                          <td>
+                                            <div class="checkbox checkbox-danger text-center">
+                                                <input id="<?=$i ?>-<?=$htno ?>" name="<?=$i ?>" value="<?=$htno ?>" type="checkbox" <?=(in_array($htno,$prevAttd[$i]))?"checked":"" ?>>
+                                                <label for="<?=$i ?>-<?=$htno ?>"></label>
+                                            </div>
+                                            <div class="block" style="height:43px;position:relative;margin-top:-43px;"></div>
+                                          </td>
+                                      <?
+									  }
 								  }
 								  else
 								  {

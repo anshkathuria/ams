@@ -6,13 +6,15 @@ if(defined('navbar'))
 	{
 		$uname=htmlspecialchars($_POST["ams_uname"],ENT_QUOTES);
 		$pwd=htmlspecialchars($_POST["ams_pwd"],ENT_QUOTES);
-		if($getUser = $mysqli->query ("SELECT role from `ams-users` WHERE uname='$uname' AND pass='$pwd'"))
+		if($getUser = $mysqli->query ("SELECT role,subjects from `ams-users` WHERE uname='$uname' AND pass='$pwd'"))
 		{
 			if($getUserObj = $getUser->fetch_object())
 			{
 				$role = (string)$getUserObj->role;
+				$subsUser = json_decode((string)$getUserObj->subjects);
 				$_SESSION["logged"]=$uname;
 				$_SESSION["role"]=$role;
+				$_SESSION["subsUser"] =$subsUser;
 			}
 			else
 			{
@@ -24,13 +26,15 @@ if(defined('navbar'))
 	{
 		$uname=htmlspecialchars($_POST["ams_uname_main"],ENT_QUOTES);
 		$pwd=htmlspecialchars($_POST["ams_pwd_main"],ENT_QUOTES);
-		if($getUser = $mysqli->query ("SELECT role from `ams-users` WHERE uname='$uname' AND pass='$pwd'"))
+		if($getUser = $mysqli->query ("SELECT role,subjects from `ams-users` WHERE uname='$uname' AND pass='$pwd'"))
 		{
 			if($getUserObj = $getUser->fetch_object())
 			{
 				$role = (string)$getUserObj->role;
+				$subsUser = json_decode((string)$getUserObj->subjects);
 				$_SESSION["logged"]=$uname;
 				$_SESSION["role"]=$role;
+				$_SESSION["subsUser"] =$subsUser;
 			}
 			else
 			{

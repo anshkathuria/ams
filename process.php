@@ -38,11 +38,12 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']
 		{
 			$effPeriod = $period + 1;
 			$effSubId = $subjects[$details["sub_name"]];
+			date_default_timezone_set("Asia/Kolkata");
 			if($checkAvailable = $mysqli->query("SELECT date, period, sub_name from `dailyattendance-$year-$sec` WHERE date='$date' AND period=$effPeriod"))
 			{
 				if($checkAvailable->fetch_object())
 				{
-					if(isset($_SESSION["logged"]) && $_SESSION["role"]="Administrator")
+					if(isset($_SESSION["logged"]) && ($_SESSION["role"]=="Administrator" || ($_SESSION["role"]=="User" && date('Y-m-d') == $date)))
 					{
 						if($qryDB = $mysqli->prepare("UPDATE `dailyattendance-".$year."-".$sec."` SET sub_name=?, absentees=? WHERE date=? AND period=?"))
 						{
@@ -54,10 +55,6 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']
 						{
 							echo "Wrong Update Stmt :/";
 						}	
-					}
-					else
-					{
-						echo "Access Denied :(";
 					}
 				}
 				else
