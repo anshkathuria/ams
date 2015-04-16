@@ -2,7 +2,7 @@
 if(isset($_GET["year"]) && isset($_GET["sec"]) && isset($_GET["startDate"]) && isset($_GET["endDate"]) )
 {
 	include "inc/simple_html_dom.php";
-	$table = file_get_contents("http://localhost/amsnew/genDownloadable.php?year=".$_GET["year"]."&sec=".$_GET["sec"]."&startDate=".$_GET["startDate"]."&endDate=".$_GET["endDate"]);
+	$table = file_get_contents("http://localhost/gams/genDownloadable.php?year=".$_GET["year"]."&sec=".$_GET["sec"]."&startDate=".$_GET["startDate"]."&endDate=".$_GET["endDate"]);
 	
 	$html = str_get_html($table);
 	
